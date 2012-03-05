@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- BEGIN_INCLUDE(manifest) -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="org.mozilla.gl_measure"
+        android:versionCode="1"
+        android:versionName="1.0">
+
+    <uses-sdk android:minSdkVersion="8" />
+
+    <application android:label="@string/app_name" android:hasCode="false">
+
+        <activity android:name="android.app.NativeActivity"
+                android:label="gl_measure"
+                android:configChanges="orientation|keyboardHidden">
+            <meta-data android:name="android.app.lib_name"
+                    android:value="gl_measure" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.mozilla.gl_measure" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest> 
+<!-- END_INCLUDE(manifest) -->
