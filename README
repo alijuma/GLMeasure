@@ -1,5 +1,11 @@
 GLMeasure is a tool for benchmarking OpenGL ES operations on Android.
 
-Building GLMeasure: To be written.
+To build GLMeausure:
+cd GLMeasure
+<sdk-root>/tools/android update project -p . -s --target android-8
+<ndk-root>/ndk-build
+ant debug
 
-Usage: To be written
+
+Usage:
+Use the run.sh script, which will install GLMeasure on your device, run it, and display the results.
