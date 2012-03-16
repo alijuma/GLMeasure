@@ -2,11 +2,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define NUMBER_OF_TESTS 50;
+
 void MeasurePrefer32(FILE* f)
 {
   fprintf(f, "Prefer 32bits?\n");
   fprintf(f, "Name, PixelSize, TextureSize, Alignment, Duration\n");
-  int numRuns = 200;
+  int numRuns = NUMBER_OF_TESTS;
 
   TestGL::PixelSize pixelSizes[] = {TestGL::PixelSize16Bits, TestGL::PixelSize24Bits, TestGL::PixelSize32Bits};
   int alignments[] = {2, 4, 8};
@@ -26,7 +28,7 @@ void MeasureTileUpload(FILE* f)
 {
   fprintf(f, "Tile upload performance\n");
   fprintf(f, "Name, PixelSize, TextureSize, Alignment, Duration\n");
-  int numRuns = 20;
+  int numRuns = NUMBER_OF_TESTS;
 
   TestGL::PixelSize pixelSizes[] = {TestGL::PixelSize16Bits, TestGL::PixelSize24Bits, TestGL::PixelSize32Bits};
   int alignments[] = {2, 4, 8};
@@ -43,7 +45,7 @@ void MeasureTileUpload(FILE* f)
 
 void MeasureExtensive(FILE* f)
 {
-  int numRuns = 20;
+  int numRuns = NUMBER_OF_TESTS;
   const int numPixelSizes = 2;
   TestGL::PixelSize pixelSizes[numPixelSizes] =
     {TestGL::PixelSize16Bits, TestGL::PixelSize32Bits};
