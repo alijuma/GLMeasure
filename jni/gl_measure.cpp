@@ -2,10 +2,47 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
-void RunGLMeasure()
+void MeasurePrefer32(FILE* f)
 {
-  FILE* f = fopen("/data/data/org.mozilla.gl_measure/files/output.txt", "w+");
+  fprintf(f, "Prefer 32bits?\n");
+  fprintf(f, "Name, PixelSize, TextureSize, Alignment, Duration\n");
+  int numRuns = 200;
+
+  TestGL::PixelSize pixelSizes[] = {TestGL::PixelSize16Bits, TestGL::PixelSize24Bits, TestGL::PixelSize32Bits};
+  int alignments[] = {2, 4, 8};
+
+  int textureSizeToTest[] = {16, 32, 64, 128, 256, 512};
+
+  for (size_t j = 0; j < sizeof(pixelSizes)/ sizeof(TestGL::PixelSize); j++) {
+    for (size_t i = 0; i < sizeof(textureSizeToTest)/sizeof(int); i++) {
+      TestTexImage2D testTexImage(pixelSizes[j], textureSizeToTest[i], 2);
+      testTexImage.TestAndOutput(numRuns, f);
+    }
+  }
+}
+
+
+void MeasureTileUpload(FILE* f)
+{
+  fprintf(f, "Tile upload performance\n");
+  fprintf(f, "Name, PixelSize, TextureSize, Alignment, Duration\n");
+  int numRuns = 20;
+
+  TestGL::PixelSize pixelSizes[] = {TestGL::PixelSize16Bits, TestGL::PixelSize24Bits, TestGL::PixelSize32Bits};
+  int alignments[] = {2, 4, 8};
+
+  int textureSizeToTest[] = {16, 32, 64, 128, 256, 512};
+
+  for (size_t j = 0; j < sizeof(pixelSizes)/ sizeof(TestGL::PixelSize); j++) {
+    for (size_t i = 0; i < sizeof(textureSizeToTest)/sizeof(int); i++) {
+      TestTexImage2D testTexImage(pixelSizes[j], textureSizeToTest[i], 2);
+      testTexImage.TestAndOutput(numRuns, f);
+    }
+  }
+}
+
+void MeasureExtensive(FILE* f)
+{
   int numRuns = 20;
   const int numPixelSizes = 2;
   TestGL::PixelSize pixelSizes[numPixelSizes] =
@@ -49,5 +86,17 @@ void RunGLMeasure()
     }
   }
   printf("\n");
+}
+
+void RunGLMeasure()
+{
+  FILE* f = fopen("/data/data/org.mozilla.gl_measure/files/output.txt", "w+");
+
+  // Uncomment the test you want to run
+
+  //MeasureExtensive(f);
+  MeasurePrefer32(f);
+  MeasureTileUpload(f);
+
   fclose(f);
 }
