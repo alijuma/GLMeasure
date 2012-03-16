@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 function error {
   local exit_status=${1:-$?}
   echo "error:" $1
