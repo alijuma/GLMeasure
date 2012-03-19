@@ -7,10 +7,10 @@
 void MeasurePrefer32(FILE* f)
 {
   fprintf(f, "Prefer 32bits?\n");
-  fprintf(f, "Name, PixelSize, TextureSize, Alignment, Duration\n");
+  fprintf(f, "                Name, PixelSize, TextureSize, Alignment, FillScreen, Duration\n");
   int numRuns = NUMBER_OF_TESTS;
 
-  TestGL::PixelSize pixelSizes[] = {TestGL::PixelSize16Bits, TestGL::PixelSize24Bits, TestGL::PixelSize32Bits};
+  TestGL::PixelSize pixelSizes[] = {TestGL::PixelSize16Bits, TestGL::PixelSize32Bits};
   int alignments[] = {2, 4, 8};
 
   int textureSizeToTest[] = {16, 32, 64, 128, 256, 512};
@@ -27,10 +27,10 @@ void MeasurePrefer32(FILE* f)
 void MeasureTileUpload(FILE* f)
 {
   fprintf(f, "Tile upload performance\n");
-  fprintf(f, "Name, PixelSize, TextureSize, Alignment, Duration\n");
+  fprintf(f, "                Name, PixelSize, TextureSize, Alignment, FillScreen, Duration\n");
   int numRuns = NUMBER_OF_TESTS;
 
-  TestGL::PixelSize pixelSizes[] = {TestGL::PixelSize16Bits, TestGL::PixelSize24Bits, TestGL::PixelSize32Bits};
+  TestGL::PixelSize pixelSizes[] = {TestGL::PixelSize16Bits, TestGL::PixelSize32Bits};
   int alignments[] = {2, 4, 8};
 
   int textureSizeToTest[] = {16, 32, 64, 128, 256, 512};

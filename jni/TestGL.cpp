@@ -59,7 +59,7 @@ void TestGL::TestAndOutput(int aNumIterations, FILE* aFile)
   double numOfUploadsToFillScreen = screenSize/(mTextureSize*mTextureSize);
   double timePerUpload = d.ToMilliseconds() / aNumIterations;
   int timeToFillScreen = (int)(numOfUploadsToFillScreen * timePerUpload);
-  fprintf(aFile, ",%d,%d,%d,a%d,%.0f\n", mPixelSize, mTextureSize, mAlignment, timeToFillScreen,
+  fprintf(aFile, ",%10d,%10d,%10d,%10d,%10.0f\n", mPixelSize, mTextureSize, mAlignment, timeToFillScreen,
           d.ToMilliseconds());
 }
 
