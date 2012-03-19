@@ -1,9 +1,5 @@
 #!/bin/bash
 
-set -e
-
-./clean.sh
-
 function error {
   local exit_status=${1:-$?}
   echo "error:" $1
@@ -31,6 +27,4 @@ function check_android {
 
 check_android;
 
-android update project -p . -s --target android-8
-ndk-build
-ant debug
+android update project -p . -s --target android-8 && ndk-build && ant debug

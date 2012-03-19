@@ -152,7 +152,7 @@ static int engine_init_display(struct engine* engine) {
     const char fShaderStr[] =
         "precision mediump float; \n"
         "void main() { \n"
-        "gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); \n"
+        " gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
         "}";
 
     GLuint vertexShader;
@@ -167,11 +167,23 @@ static int engine_init_display(struct engine* engine) {
     glAttachShader(programObject, vertexShader);
     glAttachShader(programObject, fragmentShader);
     glBindAttribLocation(programObject, 0, "vPosition");
+    glBindAttribLocation(programObject, 1, "vTexcoord");
     glLinkProgram(programObject);
     glGetProgramiv(programObject, GL_LINK_STATUS, &linked);
     if(!linked) abort();
 
     glUseProgram(programObject);
+
+    GLfloat vVertices[] = {0.0f, 0.5f, 0.0f, -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f};
+    GLfloat texCoords[] = {1.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f};
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, vVertices);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, texCoords);
+    glEnableVertexAttribArray(0);
+    //glEnableClientState(GL_VERTEX_ARRAY);
+    //glTexCoordPointer(8, GL_FLOAT, 0, texCoords);
+
+    glEnable (GL_TEXTURE_2D);
+
     return 0;
 }
 
@@ -185,6 +197,8 @@ static void engine_draw_frame(struct engine* engine) {
     }
     glClearColor(1,1,1,1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glViewport ( 0, 0, 100, 100 );
+
     RunGLMeasure();
     eglSwapBuffers(engine->display, engine->surface);
 }

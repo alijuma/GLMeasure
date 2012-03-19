@@ -76,6 +76,7 @@ Duration TestGLRunner::Run(int aNumIterations)
   Time startTime = Time::Now();
   for (int i = 0; i < aNumIterations; i++) {
     mTest->RunTest();
+    glDrawArrays(GL_TRIANGLES, 0, 3);
   }
   glFinish();
   Time endTime = Time::Now();
