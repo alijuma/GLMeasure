@@ -42,7 +42,7 @@ public:
   static Time Now()
   {
     Time t;
-    clock_gettime(CLOCK_REALTIME, &t.mTimespec);
+    clock_gettime(CLOCK_MONOTONIC, &t.mTimespec);
     return t;
   }
 
