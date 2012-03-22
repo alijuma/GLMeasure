@@ -90,12 +90,20 @@ void MeasureExtensive(FILE* f)
   printf("\n");
 }
 
+void RecordMetaData(FILE *f)
+{
+  fprintf(f, "GL_VENDOR: %s\n", glGetString(GL_VENDOR));
+  fprintf(f, "GL_VERSION: %s\n", glGetString(GL_VERSION));
+  fprintf(f, "GL_RENDERER: %s\n", glGetString(GL_RENDERER));
+}
+
 void RunGLMeasure()
 {
   FILE* f = fopen("/data/data/org.mozilla.gl_measure/files/output.txt", "w+");
 
   // Uncomment the test you want to run
 
+  RecordMetaData(f);
   //MeasureExtensive(f);
   MeasurePrefer32(f);
   MeasureTileUpload(f);
