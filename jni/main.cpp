@@ -28,6 +28,37 @@
 #include <android_native_app_glue.h>
 #include "gl_measure.h"
 
+///
+// Create a shader object, load the shader source, and // compile the shader.
+//
+GLuint LoadShader(GLenum type, const char *shaderSrc) {
+  GLuint shader; GLint compiled;
+  // Create the shader object
+  shader = glCreateShader(type);
+  if(shader == 0)
+    return 0;
+  // Load the shader source
+  glShaderSource(shader, 1, &shaderSrc, NULL);
+  // Compile the shader
+  glCompileShader(shader);
+  // Check the compile status
+  glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+  if(!compiled) {
+    GLint infoLen = 0;
+    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
+    if(infoLen > 1)
+    {
+      char* infoLog = (char*)malloc(sizeof(char) * infoLen);
+      glGetShaderInfoLog(shader, infoLen, NULL, infoLog);
+      //esLogMessage("Error compiling shader:\n%s\n", infoLog);
+      //free(infoLog);
+    }
+    glDeleteShader(shader);
+    return 0;
+  }
+  return shader;
+}
+
 /**
  * Shared state for our app.
  */
@@ -111,6 +142,47 @@ static int engine_init_display(struct engine* engine) {
     engine->context = context;
     engine->surface = surface;
 
+    const char vShaderStr[] =
+        "attribute vec4 vPosition; \n"
+        "void main() \n"
+        "{ \n"
+        " gl_Position = vPosition; \n"
+        "}";
+
+    const char fShaderStr[] =
+        "precision mediump float; \n"
+        "void main() { \n"
+        " gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
+        "}";
+
+    GLuint vertexShader;
+    GLuint fragmentShader;
+    GLuint programObject;
+    GLint linked;
+
+    vertexShader = LoadShader(GL_VERTEX_SHADER, vShaderStr);
+    fragmentShader = LoadShader(GL_FRAGMENT_SHADER, fShaderStr);
+
+    programObject = glCreateProgram();
+    glAttachShader(programObject, vertexShader);
+    glAttachShader(programObject, fragmentShader);
+    glBindAttribLocation(programObject, 0, "vPosition");
+    glBindAttribLocation(programObject, 1, "vTexcoord");
+    glLinkProgram(programObject);
+    glGetProgramiv(programObject, GL_LINK_STATUS, &linked);
+    if(!linked) abort();
+
+    glUseProgram(programObject);
+
+    GLfloat vVertices[] = {0.0f, 0.5f, 0.0f, -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f};
+    GLfloat texCoords[] = {1.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f};
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, vVertices);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, texCoords);
+    glEnableVertexAttribArray(0);
+    //glEnableClientState(GL_VERTEX_ARRAY);
+    //glTexCoordPointer(8, GL_FLOAT, 0, texCoords);
+
+    glEnable (GL_TEXTURE_2D);
 
     return 0;
 }
@@ -123,7 +195,12 @@ static void engine_draw_frame(struct engine* engine) {
         // No display.
         return;
     }
+    glClearColor(1,1,1,1);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glViewport ( 0, 0, 100, 100 );
+
     RunGLMeasure();
+    eglSwapBuffers(engine->display, engine->surface);
 }
 
 /**
@@ -157,7 +234,7 @@ static void engine_handle_cmd(struct android_app* app, int32_t cmd) {
             if (engine->app->window != NULL) {
                 engine_init_display(engine);
                 engine_draw_frame(engine);
-                engine->app->destroyRequested = 1;
+ //               engine->app->destroyRequested = 1;
             }
             break;
         case APP_CMD_TERM_WINDOW:

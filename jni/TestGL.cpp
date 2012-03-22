@@ -54,7 +54,12 @@ void TestGL::TestAndOutput(int aNumIterations, FILE* aFile)
   TestGLRunner tgr(this);
   Duration d = tgr.Run(aNumIterations);
   OutputTestName(aFile);
-  fprintf(aFile, ",%d,%d,%d,%.0f\n", mPixelSize, mTextureSize, mAlignment,
+
+  int screenSize = 1000 * 1000;
+  double numOfUploadsToFillScreen = screenSize/(mTextureSize*mTextureSize);
+  double timePerUpload = d.ToMilliseconds() / aNumIterations;
+  int timeToFillScreen = (int)(numOfUploadsToFillScreen * timePerUpload);
+  fprintf(aFile, ",%10d,%10d,%10d,%10d,%10.0f\n", mPixelSize, mTextureSize, mAlignment, timeToFillScreen,
           d.ToMilliseconds());
 }
 
@@ -71,7 +76,9 @@ Duration TestGLRunner::Run(int aNumIterations)
   Time startTime = Time::Now();
   for (int i = 0; i < aNumIterations; i++) {
     mTest->RunTest();
+    glDrawArrays(GL_TRIANGLES, 0, 3);
   }
+  glFinish();
   Time endTime = Time::Now();
   return endTime - startTime;
 }

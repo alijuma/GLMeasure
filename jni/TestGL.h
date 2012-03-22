@@ -73,7 +73,7 @@ protected:
   virtual void Test();
   virtual void OutputTestName(FILE* aFile)
   {
-    fprintf(aFile, "TexImage2D");
+    fprintf(aFile, "%20s", "TexImage2D");
   }
 };
 
@@ -86,7 +86,7 @@ protected:
   virtual void Test();
   virtual void OutputTestName(FILE* aFile)
   {
-    fprintf(aFile, "TexSubImage2D");
+    fprintf(aFile, "%20s", "TexSubImage2D");
   }
 
  GLsizei mUploadWidth;
@@ -102,7 +102,7 @@ protected:
   virtual void Test();
   virtual void OutputTestName(FILE* aFile)
   {
-    fprintf(aFile, "TexSubImage2DMemcpy");
+    fprintf(aFile, "%20s", "TexSubImage2DMemcpy");
   }
 };
 
@@ -115,7 +115,7 @@ protected:
   virtual void Test();
   virtual void OutputTestName(FILE* aFile)
   {
-    fprintf(aFile, "TexSubImage2DRowByRow");
+    fprintf(aFile, "%20s", "TexSubImage2DRowByRow");
   }
 };
 
@@ -129,7 +129,7 @@ protected:
   virtual void Test();
   virtual void OutputTestName(FILE* aFile)
   {
-    fprintf(aFile, "TexSubImage2DTopHalf");
+    fprintf(aFile, "%20s", "TexSubImage2DTopHalf");
   }
 };
 
@@ -143,7 +143,7 @@ protected:
   virtual void Test();
   virtual void OutputTestName(FILE* aFile)
   {
-    fprintf(aFile, "UnpackRowLength");
+    fprintf(aFile, "%20s", "UnpackRowLength");
   }
 
   GLsizei mUploadWidth;
